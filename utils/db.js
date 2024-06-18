@@ -7,17 +7,17 @@ class DBClient {
   constructor() {
     const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || '27017';
-    const dbName = process.env.DB_DATABASE || 'file_manager';
+    const dbName = process.env.DB_DATABASE || 'files_manager';
     const url = `mongodb://${host}:${port}/${dbName}`;
     this.client = new MongoClient(url, {
       useUnifiedTopology: true,
-      useNewUrlParser: true,
     });
 
     this.client
       .connect()
       .then(() => {
         this.db = this.client.db(dbName);
+        console.log('Connected to MongoDB');
       })
       .catch((err) => {
         console.error(`Error connecting to MongoDB: ${err.message}`);
