@@ -1,6 +1,9 @@
 import { MongoClient } from 'mongodb';
 
 class DBClient {
+  /*
+   * constructor for the DBClient class.
+   */
   constructor() {
     const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || '27017';
@@ -22,23 +25,41 @@ class DBClient {
       });
   }
 
+  /*
+   * Checks if the MongoDB client is connected.
+   *
+   * @return {boolean} True if connected, false otherwise
+   */
   isAlive() {
     return this.client.isConnected();
   }
 
+  /*
+   * Asynchronously retrieves the number of users in the 'users' collection
+   *
+   * @return {Promise<number|null>} The number of files, or null if the
+   *           database is not connected.
+   */
   async nbUsers() {
-    return this.db.collection('users').countDocuments();
+    if (!this.db) {
+      return null;
+    }
+    const result = await this.db.collection('users').countDocuments();
+    return result;
   }
 
-  async getUser(query) {
-    console.log('QUERY IN DB.JS', query);
-    const user = await this.db.collection('users').findOne(query);
-    console.log('GET USER IN DB.JS', user);
-    return user;
-  }
-
+  /*
+   * Asynchronously retrieves the number of files in the 'files' collection
+   *
+   * @return {Promise<number|null>} The number of files, or null if the
+   *           database is not connected.
+   */
   async nbFiles() {
-    return this.db.collection('files').countDocuments();
+    if (!this.db) {
+      return null;
+    }
+    const result = await this.db.collection('files').countDocuments();
+    return result;
   }
 }
 
